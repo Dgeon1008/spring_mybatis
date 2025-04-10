@@ -4,6 +4,7 @@ import com.app.mybatis.domain.PostDTO;
 import com.app.mybatis.domain.PostVO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +29,7 @@ public interface PostMapper {
 //    게시글 목록(정렬)
 //    상황마다 다르다 order로 처리
     public List<PostVO> selectAllWithOrder(String order);
+
+    public List<PostVO> selectAllWithParams(HashMap<String,Object> params);
+
 }

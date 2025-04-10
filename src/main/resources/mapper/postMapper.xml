@@ -50,24 +50,7 @@
         FROM TBL_POST
         ORDER BY
         <choose>
-            <when test="order.equals('popular'.toString())">
-                POST_READ_COUNT
-            </when>
-            <otherwise>
-                ID
-            </otherwise>
-        </choose>
-        DESC
-    </select>
-
-<!--    postMapper에 동적쿼리 추가하기-->
-<!--    만약 ORDER가 "asc"라면 오름차순으로 정렬하기-->
-    <select id="selectAllWithOrderAsc" parameterType="String" resultType="PostVO">
-        SELECT ID, POST_TITLE, POST_CONTENT, POST_READ_COUNT, MEMBER_ID
-        FROM TBL_POST
-        ORDER BY
-        <choose>
-            <when test="order.equals('popular'.toString())">
+            <when test="order.equals('popular')">
                 POST_READ_COUNT
             </when>
             <otherwise>
@@ -79,5 +62,30 @@
         </if>
     </select>
 
+
+<!--    다중 파라미터를 적을땐 MAP을 사용한다-->
+    <select id="selectAllWithParams" parameterType="Map" resultType="PostVO">
+        SELECT ID, POST_TITLE, POST_CONTENT, POST_READ_COUNT, MEMBER_ID
+        FROM TBL_POST
+        ORDER BY
+        <choose>
+            <when test="order.equals('popular')">
+                POST_READ_COUNT
+            </when>
+            <otherwise>
+                ID
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="direction != null and direction.equals('asc')">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+        OFFSET (#{cursor} -1 ) * 5 ROWS
+        FETCH NEXT 5 ROWS ONLY
+    </select>
 
 </mapper>

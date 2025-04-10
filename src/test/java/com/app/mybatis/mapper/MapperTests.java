@@ -19,6 +19,8 @@ public class MapperTests {
 
     @Autowired
     private MemberMapper memberMapper;
+    @Autowired
+    private MemberVO memberVO;
 
     @Test
     public void getTimeTest() {
@@ -86,4 +88,5 @@ public class MapperTests {
             memberMapper.delete(1L);
         });
     }
+
 }

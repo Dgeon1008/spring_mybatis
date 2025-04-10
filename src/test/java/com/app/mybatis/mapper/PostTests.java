@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -111,24 +112,35 @@ public class PostTests {
 //    동적쿼리 정렬
 //    아무것도 전달하지 않을 때
     @Test
-    public void selectAllWithOrder() {
+    public void selectWithOrderTest(){
         String order = null;
-        if(order == null){ order = "";}
+        if(order == null){ order = ""; }
         postMapper.selectAllWithOrder(order)
                 .stream().map(PostVO::toString).forEach(log::info);
     }
 
-    //    동적쿼리 정렬
+//    동적쿼리 정렬
 //    아무것도 전달하지 않을 때
     @Test
-    public void selectWithOrderTestPopular() {
-        String order = "asc";
-        if(order == null){ order = "";}
+    public void selectWithOrderTestPopular(){
+        String order = "popular";
+        if(order == null){ order = ""; }
         postMapper.selectAllWithOrder(order)
                 .stream().map(PostVO::toString).forEach(log::info);
     }
 
-//  postMapper에 동적쿼리 추가하기
-//    만약 ORDER가 "asc"라면 오름차순으로 정렬하기
+    @Test
+    public void selectWithParamTest(){
+        HashMap<String,Object> params = new HashMap<>();
+        params.put("order","popular");
+        params.put("cursor",1);
+//        if(cursor == null){
+//            cursor = 1;
+//        }
+        params.put("direction","desc");
+
+        postMapper.selectAllWithParams(params)
+                .stream().map(PostVO::toString).forEach(log::info);
+    }
 
 }
